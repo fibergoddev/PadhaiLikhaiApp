@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PadhaiLikhai</title>
+    <title>PadhaiLikhai - Next Gen</title>
     
     <!-- PWA Setup -->
     <link rel="manifest" href="manifest.json">
@@ -14,91 +14,215 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="application-name" content="PadhaiLikhai">
 
+    <!-- Fonts & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
     <style>
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
+        body { font-family: 'Outfit', sans-serif; }
         
+        /* --- Advanced Background --- */
+        .animated-bg {
+            background: linear-gradient(-45deg, #020617, #0f172a, #1e1b4b, #020617);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
-        .animated-bg {
-            background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0f172a);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
+
+        /* --- Floating Orbs --- */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.6;
+            animation: float 10s infinite ease-in-out;
+        }
+        .orb-1 { width: 300px; height: 300px; background: #3b82f6; top: -50px; left: -50px; animation-delay: 0s; }
+        .orb-2 { width: 250px; height: 250px; background: #8b5cf6; bottom: -50px; right: -50px; animation-delay: -2s; }
+        .orb-3 { width: 150px; height: 150px; background: #ec4899; top: 40%; left: 60%; animation-delay: -5s; opacity: 0.4; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, -30px); }
+        }
+
+        /* --- Preloader --- */
+        #preloader {
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+        .loader-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* --- Shimmer Effect --- */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        /* --- Glassmorphism Card --- */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
     </style>
 </head>
-<body class="animated-bg text-white h-screen flex flex-col items-center justify-center font-sans overflow-hidden selection:bg-blue-500 selection:text-white">
+<body class="animated-bg text-white h-screen w-screen overflow-hidden relative flex flex-col items-center justify-center selection:bg-blue-500 selection:text-white">
 
-    <div class="animate-fade-in bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-12 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center relative overflow-hidden group">
-        
-        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
-
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-medium mb-6">
-            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
-            v3.0 Live
-        </div>
-
-        <h1 class="text-3xl md:text-4xl font-bold mb-2 tracking-tight">
-            PadhaiLikhai
-        </h1>
-        <p class="text-slate-300 mb-8 text-sm md:text-base leading-relaxed">
-            Your gateway to smart learning. Access the latest batches and content.
-        </p>
-
-        <a id="access-button" href="#" class="group relative inline-flex w-full items-center justify-center px-8 py-4 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900">
-            <span class="mr-2 text-lg">Enter Platform</span>
-            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
-            <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-        </a>
-
-        <div class="mt-8 border-t border-white/10 pt-4">
-            <p class="text-xs text-slate-500" id="update-text">
-                Target: Loading...
-            </p>
-        </div>
+    <!-- Full Screen Preloader -->
+    <div id="preloader" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#020617]">
+        <div class="loader-ring mb-4"></div>
+        <div class="text-blue-400 font-mono text-sm tracking-widest uppercase animate-pulse">Initializing v3.0</div>
     </div>
+
+    <!-- Background Elements -->
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')] opacity-20"></div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 w-full max-w-md px-6">
+        
+        <div class="glass-card rounded-3xl p-8 md:p-10 text-center transform transition-all hover:scale-[1.01] duration-500 group">
+            
+            <!-- Top Glow Line -->
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-[1px] bg-gradient-to-r from-transparent via-blue-400 to-transparent opacity-50"></div>
+
+            <!-- Developer Badge -->
+            <div class="flex justify-center mb-6">
+                <div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 backdrop-blur-md">
+                    <div class="w-2 h-2 rounded-full bg-blue-400 animate-pulse shadow-[0_0_10px_#60a5fa]"></div>
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-blue-300">Dev: Sagar Raj</span>
+                </div>
+            </div>
+
+            <!-- Logo / Title -->
+            <div class="mb-2 relative inline-block">
+                <h1 class="text-5xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white via-blue-100 to-slate-300 drop-shadow-2xl">
+                    PadhaiLikhai
+                </h1>
+                <span class="absolute -top-2 -right-6 text-xs font-bold text-white bg-blue-600 px-1.5 py-0.5 rounded shadow-lg">v3.0</span>
+            </div>
+            
+            <p class="text-slate-400 text-sm font-medium mb-8 leading-relaxed">
+                Experience the future of learning. <br> Optimized by the best Full Stack architecture.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="space-y-4">
+                <!-- Primary Button: Enter Site -->
+                <a id="access-button" href="#" class="relative w-full flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-300 bg-blue-600 rounded-2xl hover:bg-blue-500 hover:shadow-[0_0_30px_rgba(37,99,235,0.5)] hover:-translate-y-1 active:scale-95 overflow-hidden group/btn">
+                    <span class="relative z-10 flex items-center gap-3">
+                        ENTER PLATFORM
+                        <i class="fa-solid fa-rocket"></i>
+                    </span>
+                    <!-- Shine Effect -->
+                    <div class="absolute inset-0 -translate-x-full group-hover/btn:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent z-0"></div>
+                </a>
+
+                <!-- Secondary Button: Install App -->
+                <button id="install-button" class="hidden w-full flex items-center justify-center gap-2 px-8 py-3.5 font-semibold text-slate-300 transition-all duration-300 bg-white/5 border border-white/10 rounded-2xl hover:bg-white/10 hover:text-white hover:border-white/20 active:scale-95">
+                    <i class="fa-solid fa-download"></i>
+                    <span>Install App</span>
+                </button>
+            </div>
+
+            <!-- Footer / Credit -->
+            <div class="mt-10 pt-6 border-t border-white/5">
+                <div class="flex flex-col gap-1 items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+                    <p class="text-[10px] uppercase tracking-widest text-slate-500">Developed & Designed By</p>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-slate-300">
+                        <i class="fa-solid fa-code text-blue-500"></i>
+                        <span>Sagar Raj</span>
+                        <i class="fa-solid fa-check-circle text-green-500 text-[10px]" title="Verified Best Dev"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
         // ==========================================================
         //  CONFIGURATION
         // ==========================================================
-        
         const CURRENT_DESTINATION_URL = "https://padhailikhaiv3.vercel.app/"; 
-        const LINK_VERSION_LABEL = "v3.0 (Stable)";
 
         // ==========================================================
+        //  LOGIC
+        // ==========================================================
         
-        document.addEventListener('DOMContentLoaded', () => {
-            const button = document.getElementById('access-button');
-            const versionLabel = document.getElementById('update-text');
+        let deferredPrompt;
+        
+        window.addEventListener('load', () => {
+            // 1. Set Destination
+            const btn = document.getElementById('access-button');
+            if(btn) btn.href = CURRENT_DESTINATION_URL;
 
-            if(button) {
-                button.href = CURRENT_DESTINATION_URL;
+            // 2. Remove Preloader (Simulate loading time for effect)
+            setTimeout(() => {
+                const loader = document.getElementById('preloader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.visibility = 'hidden', 800);
+                }
+            }, 1500);
+            
+            // 3. Register Service Worker
+            // Check if we are in a supported environment (http/https) to avoid blob: errors
+            if ('serviceWorker' in navigator && (window.location.protocol === 'https:' || window.location.protocol === 'http:')) {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(() => console.log('PadhaiLikhai SW Registered'))
+                    .catch(err => console.error('SW Error:', err));
+            } else {
+                console.log('Service Worker skipped: Not in http/https environment');
             }
+        });
 
-            if(versionLabel) {
-                versionLabel.textContent = `Destination: ${LINK_VERSION_LABEL}`;
-            }
-
-            if ('serviceWorker' in navigator) {
-                window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('./sw.js')
-                        .then(registration => console.log('SW registered'))
-                        .catch(err => console.log('SW failed: ', err));
+        // 4. Handle PWA Install Prompt
+        const installBtn = document.getElementById('install-button');
+        
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Update UI to notify the user they can add to home screen
+            if(installBtn) {
+                installBtn.classList.remove('hidden');
+                installBtn.classList.add('flex'); // Show the button
+                
+                installBtn.addEventListener('click', () => {
+                    // Hide our user interface that shows our A2HS button
+                    installBtn.style.display = 'none';
+                    // Show the prompt
+                    deferredPrompt.prompt();
+                    // Wait for the user to respond to the prompt
+                    deferredPrompt.userChoice.then((choiceResult) => {
+                        if (choiceResult.outcome === 'accepted') {
+                            console.log('User accepted the A2HS prompt');
+                        } else {
+                            console.log('User dismissed the A2HS prompt');
+                        }
+                        deferredPrompt = null;
+                    });
                 });
             }
         });
     </script>
-
 </body>
 </html>
