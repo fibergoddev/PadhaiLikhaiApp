@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Gateway</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Smooth fade-in animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+        
+        /* Subtle background gradient animation */
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animated-bg {
+            background: linear-gradient(-45deg, #0f172a, #1e293b, #334155, #0f172a);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+    </style>
+</head>
+<body class="animated-bg text-white h-screen flex flex-col items-center justify-center font-sans overflow-hidden selection:bg-blue-500 selection:text-white">
+
+    <!-- Main Card Container -->
+    <div class="animate-fade-in bg-white/10 backdrop-blur-lg border border-white/20 p-8 md:p-12 rounded-2xl shadow-2xl max-w-md w-full mx-4 text-center relative overflow-hidden group">
+        
+        <!-- Decorative decorative glow behind the card -->
+        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+
+        <!-- Status Indicator -->
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/20 border border-green-500/30 text-green-300 text-xs font-medium mb-6">
+            <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+            System Online
+        </div>
+
+        <!-- Header Content -->
+        <h1 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">
+            Welcome Back
+        </h1>
+        <p class="text-slate-300 mb-8 text-sm md:text-base leading-relaxed">
+            The latest version of the application is ready. Click below to access the secure portal.
+        </p>
+
+        <!-- The Dynamic Button -->
+        <!-- Note: The href is empty initially; JS fills it in -->
+        <a id="access-button" href="#" class="group relative inline-flex w-full items-center justify-center px-8 py-4 font-semibold text-white transition-all duration-200 bg-blue-600 rounded-xl hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/30 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-slate-900">
+            <span class="mr-2 text-lg">Launch App</span>
+            <i class="fa-solid fa-arrow-right transition-transform group-hover:translate-x-1"></i>
+            
+            <!-- Shine effect on button -->
+            <div class="absolute inset-0 -translate-x-full group-hover:animate-[shimmer_1.5s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        </a>
+
+        <!-- Footer Info -->
+        <div class="mt-8 border-t border-white/10 pt-4">
+            <p class="text-xs text-slate-500" id="update-text">
+                Link ver: Loading...
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // ==========================================================
+        //  USER CONFIGURATION AREA
+        //  Update the URL below to change where the button goes.
+        // ==========================================================
+        
+        const CURRENT_DESTINATION_URL = "https://padhailikhaiv3.vercel.app/"; // <--- CHANGE THIS LINK
+        
+        // Optional: Change the version text displayed at the bottom
+        const LINK_VERSION_LABEL = "v2.4 (Stable)";
+
+        // ==========================================================
+        //  LOGIC (Do not need to edit below usually)
+        // ==========================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const button = document.getElementById('access-button');
+            const versionLabel = document.getElementById('update-text');
+
+            // 1. Set the link
+            if(button) {
+                button.href = CURRENT_DESTINATION_URL;
+                
+                // Optional behavior: Open in new tab? 
+                // Uncomment the line below if you want it to open in a NEW tab.
+                // button.target = "_blank"; 
+            }
+
+            // 2. Set the version text
+            if(versionLabel) {
+                versionLabel.textContent = `Gateway Link: ${LINK_VERSION_LABEL}`;
+            }
+
+            console.log(`Gateway configured for: ${CURRENT_DESTINATION_URL}`);
+        });
+    </script>
+
+</body>
+</html>
