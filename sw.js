@@ -1,4 +1,4 @@
-const CACHE_NAME = 'gateway-v1';
+const CACHE_NAME = 'padhailikhai-v1';
 const ASSETS_TO_CACHE = [
   './',
   './index.html',
@@ -6,7 +6,6 @@ const ASSETS_TO_CACHE = [
   './icon.png'
 ];
 
-// Install Service Worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME)
@@ -14,7 +13,6 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Fetch Assets
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request)
