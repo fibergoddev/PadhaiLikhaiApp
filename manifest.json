@@ -1,10 +1,11 @@
 {
-  "name": "PadhaiLikhai",
+  "name": "PadhaiLikhai v3",
   "short_name": "PadhaiLikhai",
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "description": "Best Learning App Developed by Sagar Raj",
   "orientation": "portrait",
   "icons": [
     {
